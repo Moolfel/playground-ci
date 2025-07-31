@@ -11,6 +11,9 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Display Python and Node versions
         run: |
           python3 --version
