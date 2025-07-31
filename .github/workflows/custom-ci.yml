@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   run-custom-ci:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-latest
     container:
       image: egidesamphone/custom-ci-ubuntu-image:latest
       credentials:
@@ -11,9 +11,6 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
       - name: Display Python and Node versions
         run: |
           python3 --version
