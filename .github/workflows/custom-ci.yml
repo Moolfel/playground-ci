@@ -1,0 +1,43 @@
+name: Custom Ubuntu CI Workflow
+on: [push]
+
+jobs:
+  run-custom-ci:
+    runs-on: ubuntu-22.04-arm
+    container:
+      image: egidesamphone/custom-ci-ubuntu-image:latest
+      credentials:
+        username: egidesamphone
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Display Python and Node versions
+        run: |
+          python3 --version
+          node -v
+
+      - name: Chek Django app
+        shell: bash
+        run: |
+          source /opt/wrdn-env/bin/activate
+          ls /opt/wrdn-apps/
+          cd /opt/wrdn-apps/djangodemoapp
+          python manage.py check
+
+      - name: Check Node.js app
+        run: |
+          cd /opt/wrdn-apps/nodeapp
+          node index.js
+
+      - name: Display OS Custom Messages
+        shell: bash
+        run: cat /etc/motd
+
+      - name: Verify tools
+        run: |
+          htop --version || echo "htop installed"
+          jq --version
+          tree /opt/wrdn-apps -L 2
